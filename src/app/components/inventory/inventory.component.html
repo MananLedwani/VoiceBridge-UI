@@ -1,1 +1,64 @@
-<p>inventory works!</p>
+<div class="chart-container">
+  <div class="chart-card">
+    <div class="title">
+      <h3>Incoming & Outgoing</h3>
+    </div>
+    <p-chart
+      type="pie"
+      [data]="data1"
+      [options]="options1"
+      class="w-full md:w-[30rem]"
+    />
+  </div>
+  <div class="chart-card">
+    <div class="title">
+      <h3>Inventory</h3>
+    </div>
+    <p-chart
+      type="pie"
+      [data]="data"
+      [options]="options"
+      class="w-full md:w-[30rem]"
+    />
+  </div>
+</div>
+
+
+<div class="buttons">
+    <p-button icon="pi pi-plus" pTooltip="Add Product"></p-button>
+    <p-button icon="pi pi-arrow-down-left" pTooltip="Incoming"></p-button>
+    <p-button icon="pi pi-arrow-up-right" pTooltip="Outgoing"></p-button>
+</div>
+
+
+<div class="product-table">
+  <p-table
+    stripedRows
+    [value]="inventoryItemSignal()"
+    [paginator]="true"
+    [rows]="5"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [rowsPerPageOptions]="[5, 10, 20]"
+  >
+    <ng-template #header>
+      <tr>
+        <th style="width: 25%">Name</th>
+        <th style="width: 25%">Price</th>
+        <th pSortableColumn="quantity" style="width: 25%">
+          Quanity (Kg) <p-sortIcon field="quantity" />
+        </th>
+        <th style="width: 25%">Category</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-product>
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td [ngStyle]="{ color: product.quantity < 50 ? 'red' : 'inherit' }">
+          {{ product.quantity }}
+        </td>
+        <td>{{ product.category }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

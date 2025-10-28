@@ -1,13 +1,30 @@
-<!-- <div class="charts-container flex justify-around flex-wrap gap-6 p-4">
-  <div class="card flex justify-center flex-column items-center">
-    <h3>Sales by Category</h3>
-    <p-chart type="pie" [data]="salesData" [options]="options" class="w-full md:w-[25rem]" />
+<div class="chart-container">
+  <div class="chart-card">
+      <div class="title">
+        <h3>Incoming & Outgoing</h3>
+      </div>
+      <p-chart type="pie"  [data]="data1" [options]="options1" class="w-full md:w-[30rem]" />
   </div>
-
-  <div class="card flex justify-center flex-column items-center">
-    <h3>Stock Quantity by Category</h3>
-    <p-chart type="pie" [data]="quantityData" [options]="options" class="w-full md:w-[25rem]" />
+  <div class="chart-card">
+      <div class="title">
+        <h3>Inventory</h3>
+      </div>
+      <p-chart type="pie" [data]="data" [options]="options" class="w-full md:w-[30rem]" />
   </div>
-</div> -->
+</div>
 
-<p>Dashboard</p>
+@if (isLow()) {
+  <div class="alert" (click)="openLowStockDialog()">
+    <h3>Low Stock</h3>
+    <p-avatar [size]="'large'">{{this.lowInventoryItems.length}}</p-avatar>
+  </div>
+}
+
+<p-dialog header="Low Stock Details" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" (onHide)="hideLowStockDialog()"> 
+    @for (item of lowInventoryItems; track $index) {
+      <div class="item-info">
+        <p>{{item.name}}</p>
+        <p>{{item.quantity}}Kg</p>
+      </div>
+    }
+</p-dialog>

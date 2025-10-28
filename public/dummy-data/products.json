@@ -71,35 +71,35 @@
   },
   {
     "id": "1k2l3m4n-aaaa-4304-2560-cf3e5e6f7g8h",
-    "name": "Rice (1kg)",
+    "name": "Rice",
     "price": 90,
     "quantity": 150,
     "category": "Others"
   },
   {
     "id": "2l3m4n5o-bbbb-4415-3671-df4e6f7g8h9i",
-    "name": "Sugar (1kg)",
+    "name": "Sugar",
     "price": 45,
     "quantity": 120,
     "category": "Others"
   },
   {
     "id": "3m4n5o6p-cccc-4526-4782-ef5e7g8h9i0j",
-    "name": "Wheat Flour (1kg)",
+    "name": "Wheat Flour",
     "price": 55,
     "quantity": 120,
     "category": "Others"
   },
   {
     "id": "4n5o6p7q-dddd-4637-5893-ff6e8h9i0j1k",
-    "name": "Salt (1kg)",
+    "name": "Salt",
     "price": 20,
     "quantity": 120,
     "category": "Others"
   },
   {
     "id": "5o6p7q8r-eeee-4748-69a4-0f7e9i0j1k2l",
-    "name": "Cooking Oil (1L)",
+    "name": "Cooking Oil",
     "price": 180,
     "quantity": 120,
     "category": "Others"

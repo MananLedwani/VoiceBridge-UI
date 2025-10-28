@@ -1,0 +1,41 @@
+.charts-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.card {
+  background: var(--surface-card);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+  
+.chart-card{
+  width: 250px;
+  height: 250px;
+  margin-left: 200px;
+}
+
+.chart-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.title{
+  justify-self: center;
+}
+
+.product-table{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 50px;
+}
+
+.buttons{
+    margin-top: 80px;
+    display: flex;
+    gap: 8px;
+    justify-content: right;
+    margin-right: 40px;
+}

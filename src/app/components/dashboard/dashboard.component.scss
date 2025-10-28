@@ -11,3 +11,40 @@
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
   
+.chart-card{
+  width: 400px;
+  height: 400px;
+  margin-left: 200px;
+}
+
+.chart-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.title{
+  justify-self: center;
+}
+
+.alert{
+  height: 100px;
+  width: 400px;
+  border: 2px solid red;
+  margin-top: 70px;
+  justify-self: center;
+  border-radius: 8px;
+  color: red;
+  display: flex;
+  gap: 152px;
+  justify-content: center;
+  align-items: center;
+}
+
+.alert:hover{
+  cursor: pointer;
+}
+
+.item-info{
+  display: flex;
+  gap: 120px;
+}

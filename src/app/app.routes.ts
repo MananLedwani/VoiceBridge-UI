@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './guards/auth.guard';
+import { ClerkManagementGuard } from './guards/clerk-management.guard';
 
 export const routes: Routes = [
     {
@@ -8,6 +10,8 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         loadComponent: () => import('./components/layout/layout.component').then((c) => c.LayoutComponent),
+        canActivate: [AuthGuard],
+        canActivateChild: [AuthGuard],
         children: [
             {
                 path: '',
@@ -16,8 +20,21 @@ export const routes: Routes = [
             {
                 path: 'inventory',
                 loadComponent: () => import('./components/inventory/inventory.component').then((c) => c.InventoryComponent),
+            },
+            {
+                path: 'clerk',
+                loadComponent: () => import('./components/clerk-management/clerk-management.component').then((c) => c.ClerkManagementComponent),
+                canActivate: [ClerkManagementGuard],
             }
         ]
     },
-    {path: '**', redirectTo: 'login', pathMatch: 'full'},
+    {
+        path: 'access-denied',
+        loadComponent: () => import('./components/access-denied/access-denied.component').then((c) => c.AccessDeniedComponent),
+    },
+    {
+        path: 'error',
+        loadComponent: () => import('./components/error-page/error-page.component').then((c) => c.ErrorPageComponent),
+    },
+    {path: '**', redirectTo: 'error', pathMatch: 'full'},
 ];
