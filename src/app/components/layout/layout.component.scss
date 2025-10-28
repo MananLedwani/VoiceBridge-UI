@@ -1,0 +1,43 @@
+.nav{
+    position: relative;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+}
+
+.logout{
+    height: 40px;
+    width: 100px;
+    border-radius: 6px;
+    border: 2px solid red;
+    background-color: red;
+    color: white;
+}
+
+.logout:hover{
+    cursor: pointer;
+}
+
+.title{
+    margin-left: 15px;
+}
+
+.sidebar{
+    margin-top: 0px;
+    width: 12.5%;
+    position: fixed;
+    height: 100%;
+
+    ::ng-deep.p-menu {
+        height: 100%;
+    }
+}
+
+.router-outlet{
+    border: 2px solid black;
+    height: 673px;
+    width: 86.9%;
+    margin-left: 200px;
+    padding: 6px;
+    overflow: auto;
+}
