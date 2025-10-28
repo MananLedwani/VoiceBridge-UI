@@ -25,9 +25,11 @@
 
 
 <div class="buttons">
-    <p-button icon="pi pi-plus" pTooltip="Add Product"></p-button>
-    <p-button icon="pi pi-arrow-down-left" pTooltip="Incoming"></p-button>
-    <p-button icon="pi pi-arrow-up-right" pTooltip="Outgoing"></p-button>
+    @if (isAdmin) {
+      <p-button icon="pi pi-plus" pTooltip="Add Product" (onClick)="showAddProductDialog()"></p-button>
+    }
+    <p-button icon="pi pi-arrow-down-left" pTooltip="Incoming" (onClick)="showIncomingDialog()"></p-button>
+    <p-button icon="pi pi-arrow-up-right" pTooltip="Outgoing" (onClick)="showOutgoingDialog()"></p-button>
 </div>
 
 
@@ -62,3 +64,257 @@
     </ng-template>
   </p-table>
 </div>
+
+<p-dialog
+  header="Add Product"
+  [modal]="true"
+  [(visible)]="addProductDialog"
+  [style]="{ width: '25rem' }"
+  (onHide)="hideAddProductDialog(addProductForm)"
+>
+  <span class="p-text-secondary block mb-8">Product Information</span>
+
+  <form #addProductForm="ngForm" (ngSubmit)="onAddProduct(addProductForm)" novalidate>
+    <div class="entry">
+      <label for="productname">Name <span class="star">*</span></label>
+      <input
+        pInputText
+        id="productname"
+        name="name"
+        [(ngModel)]="newProduct.name"
+        required
+        #name="ngModel"
+        autocomplete="off"
+      />
+      @if (name.invalid && (name.dirty || name.touched)) {
+        <div class="error">
+          <small *ngIf="name.errors?.['required']">Name is required.</small>
+        </div>
+      }
+    </div>
+
+    <div class="entry">
+      <label for="price">Price <span class="star">*</span></label>
+      <input
+        pInputText
+        id="price"
+        name="price"
+        type="number"
+        [(ngModel)]="newProduct.price"
+        required
+        min="1"
+        #price="ngModel"
+        autocomplete="off"
+      />
+      @if (price.invalid && (price.dirty || price.touched)) {
+        <div class="error">
+          @if (price.errors?.['required']) {
+            <small>Price is required.</small>
+          }
+          @if (price.errors?.['min']) {
+            <small>Price must be greater than zero.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="entry">
+      <label for="quantity">Quantity (Kg) <span class="star">*</span></label>
+      <input
+        pInputText
+        id="quantity"
+        name="quantity"
+        type="number"
+        [(ngModel)]="newProduct.quantity"
+        required
+        min="1"
+        #quantity="ngModel"
+        autocomplete="off"
+      />
+      @if (quantity.invalid && (quantity.dirty || quantity.touched)) {
+        <div class="error">
+          @if (quantity.errors?.['required']) {
+            <small>Quantity is required.</small>
+          }
+          @if (quantity.errors?.['min']) {
+            <small>Quantity must be greater than zero.</small>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="entry">
+      <label for="category">Category <span class="star">*</span></label>
+      <select
+        id="category"
+        name="category"
+        [(ngModel)]="newProduct.category"
+        required
+        #category="ngModel"
+      >
+        <option value="" disabled selected>Select Category</option>
+        <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+      </select>
+      @if (category.invalid && (category.dirty || category.touched)) {
+        <div class="error">
+          <small>Category is required.</small>
+        </div>
+      }
+    </div>
+
+    <div class="buttons">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="hideAddProductDialog(addProductForm)"
+        type="button"
+      ></p-button>
+      <p-button
+        label="Add"
+        [disabled]="addProductForm.invalid"
+        type="submit"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>
+
+<p-dialog
+  header="Incoming Stock"
+  [modal]="true"
+  [(visible)]="incomingDialog"
+  [style]="{ width: '28rem' }"
+  (onHide)="hideIncomingDialog(incomingForm)"
+>
+  <form
+    #incomingForm="ngForm"
+    (ngSubmit)="onIncomingProduct(incomingForm)"
+    novalidate
+    class="incoming-form"
+  >
+    <span class="p-text-secondary block mb-3">Select Product and Enter Quantity</span>
+
+    <div class="form-group">
+      <label for="productName">Product Name <span class="star">*</span></label>
+      <p-autoComplete
+        inputId="productName"
+        [(ngModel)]="selectedProduct"
+        name="productName"
+        [suggestions]="filteredProducts"
+        (completeMethod)="filterProducts($event)"
+        [dropdown]="true"
+        [forceSelection]="true"
+        field="name"
+        #productSelection="ngModel"
+        required
+      ></p-autoComplete>
+
+      @if (productSelection.touched && !selectedProduct) {
+        <small class="error">Please select a product.</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="incomingQuantity">Incoming Quantity (Kg) <span class="star">*</span></label>
+      <input
+        pInputText
+        id="incomingQuantity"
+        type="number"
+        name="incomingQuantity"
+        [(ngModel)]="incomingQuantity"
+        min="1"
+        required
+        #incomingQty="ngModel"
+      />
+      @if (incomingQty.touched && incomingQty.dirty && (!incomingQuantity || incomingQuantity <= 0)) {
+        <small class="error">Quantity must be greater than zero.</small>
+      }@else if (incomingQty.touched && !incomingQty.dirty) {
+        <small class="error">Quantity is required.</small>
+      }
+    </div>
+
+    <div class="buttons">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="hideIncomingDialog(incomingForm)"
+        type="button"
+      ></p-button>
+      <p-button
+        label="Ok"
+        [disabled]="incomingForm.invalid"
+        type="submit"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>
+
+
+<p-dialog
+  header="Outgoing Stock"
+  [modal]="true"
+  [(visible)]="outgoingDialog"
+  [style]="{ width: '28rem' }"
+  (onHide)="hideOutgoingDialog(outgoingForm)"
+>
+  <form
+    #outgoingForm="ngForm"
+    (ngSubmit)="onOutgoingProduct(outgoingForm)"
+    novalidate
+    class="incoming-form"
+  >
+    <span class="p-text-secondary block mb-3">Select Product and Enter Quantity</span>
+
+    <div class="form-group">
+      <label for="productName">Product Name <span class="star">*</span></label>
+      <p-autoComplete
+        inputId="productName"
+        [(ngModel)]="selectedProduct"
+        name="productName"
+        [suggestions]="filteredProducts"
+        (completeMethod)="filterProducts($event)"
+        [dropdown]="true"
+        [forceSelection]="true"
+        field="name"
+        #productSelection="ngModel"
+        required
+      ></p-autoComplete>
+
+      @if (productSelection.touched && !selectedProduct) {
+        <small class="error">Please select a product.</small>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="incomingQuantity">Outgoing Quantity (Kg) <span class="star">*</span></label>
+      <input
+        pInputText
+        id="incomingQuantity"
+        type="number"
+        name="incomingQuantity"
+        [(ngModel)]="outgoingQuantity"
+        min="1"
+        required
+        #incomingQty="ngModel"
+      />
+      @if (incomingQty.touched && incomingQty.dirty && (!incomingQuantity || incomingQuantity <= 0)) {
+        <small class="error">Quantity must be greater than zero.</small>
+      }@else if (incomingQty.touched && !incomingQty.dirty) {
+        <small class="error">Quantity is required.</small>
+      }
+    </div>
+
+    <div class="buttons">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (click)="hideOutgoingDialog(outgoingForm)"
+        type="button"
+      ></p-button>
+      <p-button
+        label="Ok"
+        [disabled]="outgoingForm.invalid"
+        type="submit"
+      ></p-button>
+    </div>
+  </form>
+</p-dialog>

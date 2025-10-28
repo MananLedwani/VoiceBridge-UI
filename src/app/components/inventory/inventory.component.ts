@@ -10,12 +10,25 @@ import {
 import { ChartModule } from 'primeng/chart';
 import { TableModule } from 'primeng/table';
 import { Product } from '../../models/product.model';
-import { Button } from "primeng/button";
-import { Tooltip } from "primeng/tooltip";
+import { Button } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
+import { Dialog } from 'primeng/dialog';
+import { FormsModule, NgForm } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { AutoComplete, AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-inventory',
-  imports: [ChartModule, TableModule, CommonModule, Button, Tooltip],
+  imports: [
+    ChartModule,
+    TableModule,
+    CommonModule,
+    Button,
+    Tooltip,
+    Dialog,
+    FormsModule,
+    AutoComplete,
+  ],
   templateUrl: './inventory.component.html',
   styleUrl: './inventory.component.scss',
 })
@@ -25,6 +38,28 @@ export class InventoryComponent {
 
   data1 = {};
   options1 = {};
+
+  addProductDialog: boolean = false;
+  incomingDialog: boolean = false;
+  outgoingDialog: boolean = false;
+  isAdmin: boolean = false;
+
+  selectedProduct: Product | null = null;
+  incomingQuantity: number | null = null;
+  outgoingQuantity: number | null = null;
+  filteredProducts: Product[] = [];
+
+  newProduct = { id: '', name: '', price: null, quantity: null, category: '' };
+
+  productToAdd: Product = {
+    id: '',
+    name: '',
+    price: 0,
+    quantity: 0,
+    category: '',
+  };
+
+  categories: string[] = ['Vegetable', 'Fruits', 'Others'];
 
   inventoryItems: Product[] = [
     {
@@ -144,15 +179,18 @@ export class InventoryComponent {
 
   incomingDataSignal: WritableSignal<number> = signal(this.incomingData);
   outgoingDataSignal: WritableSignal<number> = signal(this.outgoingData);
-  vegetableInventorySignal: WritableSignal<number> = signal(this.vegetableInventory);
+  vegetableInventorySignal: WritableSignal<number> = signal(
+    this.vegetableInventory
+  );
   fruitInventorySignal: WritableSignal<number> = signal(this.fruitInventory);
   otherInventorySignal: WritableSignal<number> = signal(this.otherInventory);
   inventoryItemSignal: WritableSignal<Product[]> = signal(this.inventoryItems);
 
-  constructor(private cd: ChangeDetectorRef) {}
+  constructor(private cd: ChangeDetectorRef, private auth: AuthService) {}
 
   ngOnInit() {
     this.initChart();
+    if (this.auth.isAdmin()) this.isAdmin = true;
   }
 
   initChart() {
@@ -164,7 +202,11 @@ export class InventoryComponent {
         labels: ['Vegetables', 'Fruits', 'Others'],
         datasets: [
           {
-            data: [this.vegetableInventorySignal(), this.fruitInventorySignal(), this.otherInventorySignal()],
+            data: [
+              this.vegetableInventorySignal(),
+              this.fruitInventorySignal(),
+              this.otherInventorySignal(),
+            ],
             backgroundColor: [
               documentStyle.getPropertyValue('--p-cyan-500'),
               documentStyle.getPropertyValue('--p-orange-500'),
@@ -219,6 +261,129 @@ export class InventoryComponent {
       };
 
       this.cd.markForCheck();
+    }
+  }
+
+  showAddProductDialog(): void {
+    this.addProductDialog = true;
+  }
+
+  hideAddProductDialog(form: NgForm): void {
+    this.addProductDialog = false;
+    form.reset();
+  }
+
+  showIncomingDialog(): void {
+    this.incomingDialog = true;
+  }
+
+  hideIncomingDialog(form: NgForm): void {
+    this.incomingDialog = false;
+    form.reset();
+  }
+
+  showOutgoingDialog(): void {
+    this.outgoingDialog = true;
+  }
+
+  hideOutgoingDialog(form: NgForm): void {
+    this.outgoingDialog = false;
+    form.reset();
+  }
+
+  onAddProduct(form: NgForm) {
+    if (form.valid) {
+      const formValue = form.value;
+      this.productToAdd.id = crypto.randomUUID();
+      this.productToAdd.name = formValue.name;
+      this.productToAdd.quantity = formValue.quantity;
+      this.productToAdd.price = formValue.price;
+      this.productToAdd.category = formValue.category;
+      this.inventoryItemSignal.update((items) => [...items, this.productToAdd]);
+      this.incomingDataSignal.update(
+        (value) => value + this.productToAdd.quantity
+      );
+      if (this.productToAdd.category === 'Vegetable') {
+        this.vegetableInventorySignal.update(
+          (value) => value + this.productToAdd.quantity
+        );
+      } else if (this.productToAdd.category === 'Fruit') {
+        this.fruitInventorySignal.update(
+          (value) => value + this.productToAdd.quantity
+        );
+      } else {
+        this.otherInventorySignal.update(
+          (value) => value + this.productToAdd.quantity
+        );
+      }
+      this.initChart();
+      this.hideAddProductDialog(form);
+    }
+  }
+
+  filterProducts(event: AutoCompleteCompleteEvent) {
+    const query = event.query.toLowerCase();
+    this.filteredProducts = this.inventoryItems.filter((item) =>
+      item.name.toLowerCase().includes(query)
+    );
+  }
+
+  onIncomingProduct(form: NgForm) {
+    if (form.valid && this.selectedProduct && this.incomingQuantity! > 0) {
+      const addedQuantity = this.incomingQuantity!;
+
+      this.incomingDataSignal.update((current) => current + addedQuantity);
+
+      this.inventoryItemSignal.update((items) =>
+        items.map((item) =>
+          item.id === this.selectedProduct!.id
+            ? { ...item, quantity: item.quantity + addedQuantity }
+            : item
+        )
+      );
+
+      switch (this.selectedProduct.category) {
+        case 'Vegetable':
+          this.vegetableInventorySignal.update((v) => v + addedQuantity);
+          break;
+        case 'Fruit':
+          this.fruitInventorySignal.update((f) => f + addedQuantity);
+          break;
+        case 'Others':
+          this.otherInventorySignal.update((o) => o + addedQuantity);
+          break;
+      }
+      this.initChart();
+      this.hideIncomingDialog(form);
+    }
+  }
+
+  onOutgoingProduct(form: NgForm) {
+    if (form.valid && this.selectedProduct && this.outgoingQuantity! > 0) {
+      const addedQuantity = this.outgoingQuantity!;
+      this.incomingDataSignal.update((current) => current - addedQuantity);
+
+      this.inventoryItemSignal.update((items) =>
+        items.map((item) =>
+          item.id === this.selectedProduct!.id
+            ? { ...item, quantity: item.quantity - addedQuantity }
+            : item
+        )
+      );
+
+      switch (this.selectedProduct.category) {
+        case 'Vegetable':
+          this.vegetableInventorySignal.update((v) => v - addedQuantity);
+          break;
+        case 'Fruit':
+          this.fruitInventorySignal.update((f) => f - addedQuantity);
+          break;
+        case 'Others':
+          this.otherInventorySignal.update((o) => o - addedQuantity);
+          break;
+      }
+      this.initChart();
+      this.hideOutgoingDialog(form);
     }
   }
 }

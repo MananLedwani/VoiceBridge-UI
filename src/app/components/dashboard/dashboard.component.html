@@ -1,3 +1,7 @@
+<div class="warning" *ngIf="warningMessage()">
+  {{ warningMessage() }}
+</div>
+
 <div class="chart-container">
   <div class="chart-card">
       <div class="title">
@@ -14,17 +18,17 @@
 </div>
 
 @if (isLow()) {
-  <div class="alert" (click)="openLowStockDialog()">
+    <div class="alert" (click)="openLowStockDialog()">
     <h3>Low Stock</h3>
     <p-avatar [size]="'large'">{{this.lowInventoryItems.length}}</p-avatar>
-  </div>
+</div>
 }
 
 <p-dialog header="Low Stock Details" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" (onHide)="hideLowStockDialog()"> 
     @for (item of lowInventoryItems; track $index) {
-      <div class="item-info">
-        <p>{{item.name}}</p>
-        <p>{{item.quantity}}Kg</p>
-      </div>
+        <div class="item-info">
+            <p>{{item.name}}</p>
+            <p>{{item.quantity}}Kg</p>
+        </div>
     }
 </p-dialog>

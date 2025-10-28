@@ -36,5 +36,6 @@ export const routes: Routes = [
         path: 'error',
         loadComponent: () => import('./components/error-page/error-page.component').then((c) => c.ErrorPageComponent),
     },
+    {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: '**', redirectTo: 'error', pathMatch: 'full'},
 ];

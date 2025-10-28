@@ -39,3 +39,110 @@
     justify-content: right;
     margin-right: 40px;
 }
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 10px;
+
+  .entry {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 2px;
+
+      .star {
+        color: red;
+      }
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1.5px solid #d1d5db;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      background-color: #fff;
+      appearance: none;
+      height: 40px;
+      padding: 10px;
+
+      &:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        outline: none;
+      }
+    }
+
+
+    .error {
+      color: #ef4444;
+      font-size: 15px;
+      margin-top: 4px;
+
+      small {
+        display: block;
+      }
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 60px;
+    margin-left: 360px;
+  }
+}
+
+.incoming-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding: 1rem 0.5rem;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: #333;
+    }
+
+
+    p-autoComplete {
+      width: 100%;
+    }
+
+    input{
+      width: 66%;
+      height: 35px;
+      border-radius: 6px;
+      padding: 4px;
+    }
+
+    .error {
+      color: #e74c3c;
+      font-size: 0.85rem;
+      margin-top: 0.3rem;
+    }
+  }
+
+  .star {
+    color: red;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}

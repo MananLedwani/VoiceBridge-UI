@@ -1,15 +1,15 @@
 import { ChangeDetectorRef, Component, inject, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { ChartModule } from 'primeng/chart';
-import { isPlatformBrowser } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Product } from '../../models/product.model';
 import { Avatar } from "primeng/avatar";
 import { Dialog } from 'primeng/dialog';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ChartModule, Avatar, Dialog],
+  imports: [ChartModule, Avatar, Dialog, CommonModule],
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.scss'
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent{
     data = {};
@@ -133,17 +133,29 @@ export class DashboardComponent{
     lowInventoryItems: Product[] = [];
 
     isLow: WritableSignal<boolean> = signal(false);
+    warningMessage: WritableSignal<string | null> = signal(null);
 
 
     constructor(private cd: ChangeDetectorRef) {}
 
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.initChart();
 
         this.lowInventoryItems = this.inventoryItems.filter((item) => item.quantity < 50);
-        if(this.lowInventoryItems.length > 0) this.isLow.set(true);
+        if(this.lowInventoryItems.length > 0) {
+          this.isLow.set(true);
+          this.showWarn();
+        }
     }
+
+    showWarn(): void {
+    this.warningMessage.set('⚠️ Low stock alert! Some items have less than 50 quantity.');
+    setTimeout(() => {
+      this.warningMessage.set(null);
+    }, 3000);
+  }
+
 
     openLowStockDialog(): void{
       this.visible = true;
