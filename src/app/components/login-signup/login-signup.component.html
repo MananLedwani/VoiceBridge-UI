@@ -1,57 +1,97 @@
 <div class="container">
-  <div class="image"></div>
+  <div class="left">
+    <img src="https://slator.com/assets/2020/04/Speech-to-Speech-Translation-Toolkit-Open-Source.png" alt="voice bridge" />
+  </div>
 
-  <div class="login-form">
-    <div class="heading">
-      <h1>Login</h1>
-      <br />
-      <h5>Manage your Inventory with Inventra!!</h5>
-      <div class="form-container">
-          <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)" novalidate>
-            <div class="form-group">
-              <label>Email <span class="star">*</span></label>
-              <input
-                type="email"
-                name="email"
-                [(ngModel)]="loginDetails.email"
-                required
-                email
-                #email="ngModel"
-              />
-              <div
-                class="error"
-                *ngIf="email.invalid && (email.dirty || email.touched)"
-              >
-                <small *ngIf="email.errors?.['required']">Email is required.</small>
-                <small *ngIf="email.errors?.['email']"
-                  >Enter a valid email address.</small
-                >
-              </div>
-            </div>
-            <br><br>
-            <div class="form-group">
-              <label>Password <span class="star">*</span></label>
-              <input
-                type="password"
-                name="password"
-                [(ngModel)]="loginDetails.password"
-                required
-                #password="ngModel"
-              />
-              <div
-                class="error"
-                *ngIf="password.invalid && (password.dirty || password.touched)"
-              >
-                @if (password.invalid && (password.dirty || password.touched)) { @if
-                (password.errors?.['required']) {
-                <small>Password is required.</small>
-                }}
-              </div>
-            </div>
-            <br><br>
-            <button class="login-button" [disabled]="loginForm.invalid">Login</button>
-          </form>
-      </div>
-    </div>
+  <div class="right">
+    <h1>Voice Bridge</h1>
+
+    @if (isLogin()) {
+      <form #loginForm="ngForm" (ngSubmit)="onLogin(loginForm)">
+        <h2>Login</h2>
+
+        <label>Email<span class="req">*</span></label>
+        <input
+          type="email"
+          name="email"
+          ngModel
+          required
+          email
+          #email="ngModel"
+        />
+        @if (email.invalid && email.touched) {
+          <p class="error">Email is required and must be valid</p>
+        }
+
+        <label>Password<span class="req">*</span></label>
+        <input
+          type="password"
+          name="password"
+          ngModel
+          required
+          #password="ngModel"
+        />
+        @if (password.invalid && password.touched) {
+          <p class="error">Password is required</p>
+        }
+
+        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+
+        <p class="switch-text">
+          Don't have an account?
+          <span (click)="toggle()">Sign Up</span>
+        </p>
+      </form>
+    }
+
+    @else {
+      <form #signupForm="ngForm" (ngSubmit)="onSignup(signupForm)">
+        <h2>Sign Up</h2>
+
+        <label>Name<span class="req">*</span></label>
+        <input
+          type="text"
+          name="name"
+          ngModel
+          required
+          #name="ngModel"
+        />
+        @if (name.invalid && name.touched) {
+          <p class="error">Name is required</p>
+        }
+
+        <label>Email<span class="req">*</span></label>
+        <input
+          type="email"
+          name="email"
+          ngModel
+          required
+          email
+          #email2="ngModel"
+        />
+        @if (email2.invalid && email2.touched) {
+          <p class="error">Valid email is required</p>
+        }
+
+        <label>Password<span class="req">*</span></label>
+        <input
+          type="password"
+          name="password"
+          ngModel
+          required
+          #password2="ngModel"
+        />
+        @if (password2.invalid && password2.touched) {
+          <p class="error">Password is required</p>
+        }
+
+        <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+
+        <p class="switch-text">
+          Already have an account?
+          <span (click)="toggle()">Login</span>
+        </p>
+      </form>
+    }
   </div>
 </div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClerkManagementComponent } from './clerk-management.component';
+import { SpeechToTextComponent } from './speech-to-text.component';
 
-describe('ClerkManagementComponent', () => {
-  let component: ClerkManagementComponent;
-  let fixture: ComponentFixture<ClerkManagementComponent>;
+describe('SpeechToTextComponent', () => {
+  let component: SpeechToTextComponent;
+  let fixture: ComponentFixture<SpeechToTextComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ClerkManagementComponent]
+      imports: [SpeechToTextComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ClerkManagementComponent);
+    fixture = TestBed.createComponent(SpeechToTextComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

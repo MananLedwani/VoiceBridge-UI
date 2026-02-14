@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { InventoryComponent } from './inventory.component';
+import { TextToSpeechComponent } from './text-to-speech.component';
 
-describe('InventoryComponent', () => {
-  let component: InventoryComponent;
-  let fixture: ComponentFixture<InventoryComponent>;
+describe('TextToSpeechComponent', () => {
+  let component: TextToSpeechComponent;
+  let fixture: ComponentFixture<TextToSpeechComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [InventoryComponent]
+      imports: [TextToSpeechComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(InventoryComponent);
+    fixture = TestBed.createComponent(TextToSpeechComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

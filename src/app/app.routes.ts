@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './guards/auth.guard';
-import { ClerkManagementGuard } from './guards/clerk-management.guard';
 
 export const routes: Routes = [
     {
@@ -8,33 +6,30 @@ export const routes: Routes = [
         loadComponent: () => import('./components/login-signup/login-signup.component').then((c) => c.LoginSignupComponent),
     },
     {
-        path: 'dashboard',
+        path: 'home',
         loadComponent: () => import('./components/layout/layout.component').then((c) => c.LayoutComponent),
-        canActivate: [AuthGuard],
-        canActivateChild: [AuthGuard],
         children: [
             {
-                path: '',
-                loadComponent: () => import('./components/dashboard/dashboard.component').then((c) => c.DashboardComponent),
+                path: 'text-to-text',
+                loadComponent: () => import('./components/text-to-text/text-to-text.component').then((c) => c.TextToTextComponent),
             },
             {
-                path: 'inventory',
-                loadComponent: () => import('./components/inventory/inventory.component').then((c) => c.InventoryComponent),
+                path: 'text-to-speech',
+                loadComponent: () => import('./components/text-to-speech/text-to-speech.component').then((c) => c.TextToSpeechComponent),
             },
             {
-                path: 'clerk',
-                loadComponent: () => import('./components/clerk-management/clerk-management.component').then((c) => c.ClerkManagementComponent),
-                canActivate: [ClerkManagementGuard],
+                path: 'speech-to-speech',
+                loadComponent: () => import('./components/speech-to-speech/speech-to-speech.component').then((c) => c.SpeechToSpeechComponent),
+            },
+            {
+                path: 'speech-to-text',
+                loadComponent: () => import('./components/speech-to-text/speech-to-text.component').then((c) => c.SpeechToTextComponent),
             }
         ]
     },
     {
-        path: 'access-denied',
-        loadComponent: () => import('./components/access-denied/access-denied.component').then((c) => c.AccessDeniedComponent),
-    },
-    {
         path: 'error',
-        loadComponent: () => import('./components/error-page/error-page.component').then((c) => c.ErrorPageComponent),
+        loadComponent: () => import('./components/error-page/error-page.component').then((c) => c.ErrorPageComponent)
     },
     {path: '', redirectTo: 'login', pathMatch: 'full'},
     {path: '**', redirectTo: 'error', pathMatch: 'full'},

@@ -1,8 +1,6 @@
-import { Component } from '@angular/core';
-import { Login } from '../../models/login.model';
+import { Component, signal, WritableSignal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,19 +10,35 @@ import { Router } from '@angular/router';
   styleUrl: './login-signup.component.scss'
 })
 export class LoginSignupComponent {
-  loginDetails: Login = {
-    email: '',
-    password: ''
-  };
+  isLogin: WritableSignal<boolean> = signal(true);
 
-  constructor(private authService: AuthService, private router: Router) {}
+  users: any[] = []; 
 
-  onLogin(form: NgForm){
-    if(form.valid){
-      const success = this.authService.login(this.loginDetails.email, this.loginDetails.password);
-      if(success){
-        this.router.navigate(['/dashboard'], {replaceUrl: true});
-      }
+  constructor(private router: Router){}
+
+  toggle() {
+    this.isLogin.set(!this.isLogin());
+  }
+
+  onLogin(form: any) {
+    if (form.invalid) return;
+
+    const found = this.users.find(
+      (u) => u.email === form.value.email && u.password === form.value.password
+    );
+
+    if (found) {
+      alert('Login successful!'); 
+      this.router.navigate(['/home/text-to-text']);
     }
+    else alert('Invalid credentials');
+  }
+
+  onSignup(form: any) {
+    if (form.invalid) return;
+
+    this.users.push(form.value);
+    alert('Signup successful! You can now log in.');
+    this.isLogin.set(true);
   }
 }

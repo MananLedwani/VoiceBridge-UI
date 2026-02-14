@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Menubar } from 'primeng/menubar';
 import { AvatarModule } from 'primeng/avatar';
 import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Router, RouterOutlet } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,37 +11,31 @@ import { AuthService } from '../../services/auth.service';
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
-export class LayoutComponent implements OnInit {
+export class LayoutComponent {
   items: MenuItem[] = [
-    { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard'] },
+    { label: 'Text to Text', 
+      icon: 'pi pi-language', 
+      routerLink: ['/home/text-to-text'] },
     {
-      label: 'Inventory',
-      icon: 'pi pi-receipt',
-      routerLink: ['/dashboard/inventory'],
+      label: 'Text to Speech',
+      icon: 'pi pi-language',
+      routerLink: ['/home/text-to-speech'],
     },
+    {
+      label: 'Speech to Speech',
+      icon: 'pi pi-language',
+      routerLink: ['/home/speech-to-speech'],
+    },
+    {
+      label: 'Speech to Text',
+      icon: 'pi pi-language',
+      routerLink: ['/home/speech-to-text']
+    }
   ];
 
-  constructor(private auth: AuthService) {}
-
-  ngOnInit(): void {
-    if (this.auth.isAdmin()) {
-      this.items = [
-        { label: 'Dashboard', icon: 'pi pi-home', routerLink: ['/dashboard'] },
-        {
-          label: 'Inventory',
-          icon: 'pi pi-receipt',
-          routerLink: ['/dashboard/inventory'],
-        },
-        {
-          label: 'Clerk Management',
-          icon: 'pi pi-user',
-          routerLink: ['/dashboard/clerk'],
-        },
-      ];
-    }
-  }
+  constructor(private router: Router) {}
 
   onLogout() {
-    this.auth.logout();
+    this.router.navigate(['/login']);
   }
 }

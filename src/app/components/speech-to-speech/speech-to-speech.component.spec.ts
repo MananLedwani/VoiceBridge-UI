@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AccessDeniedComponent } from './access-denied.component';
+import { SpeechToSpeechComponent } from './speech-to-speech.component';
 
-describe('AccessDeniedComponent', () => {
-  let component: AccessDeniedComponent;
-  let fixture: ComponentFixture<AccessDeniedComponent>;
+describe('SpeechToSpeechComponent', () => {
+  let component: SpeechToSpeechComponent;
+  let fixture: ComponentFixture<SpeechToSpeechComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccessDeniedComponent]
+      imports: [SpeechToSpeechComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(AccessDeniedComponent);
+    fixture = TestBed.createComponent(SpeechToSpeechComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

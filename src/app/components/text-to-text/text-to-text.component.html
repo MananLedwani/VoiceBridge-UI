@@ -1,0 +1,31 @@
+<div class="ttt-container">
+  
+  <div class="input-section">
+    <h2>Enter Text</h2>
+
+    <textarea
+      [(ngModel)]="inputText"
+      placeholder="Type your text here..."
+    ></textarea>
+
+    <div class="select-row">
+      <label>Select Target Language:</label>
+
+      <select [(ngModel)]="targetLanguage">
+        <option value="hi">Hindi</option>
+        <option value="sa">Sanskrit</option>
+      </select>
+    </div>
+
+    <button (click)="translate()">Translate</button>
+  </div>
+
+  <div class="output-section">
+    <h2>Translated Text</h2>
+
+    <div class="output-box">
+      {{ translatedText || 'Your translated text will appear here...' }}
+    </div>
+  </div>
+
+</div>
