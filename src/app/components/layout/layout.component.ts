@@ -22,14 +22,14 @@ export class LayoutComponent {
       routerLink: ['/home/text-to-speech'],
     },
     {
-      label: 'Speech to Speech',
-      icon: 'pi pi-language',
-      routerLink: ['/home/speech-to-speech'],
-    },
-    {
       label: 'Speech to Text',
       icon: 'pi pi-language',
       routerLink: ['/home/speech-to-text']
+    },
+    {
+      label: 'Speech to Speech',
+      icon: 'pi pi-language',
+      routerLink: ['/home/speech-to-speech'],
     }
   ];
 
