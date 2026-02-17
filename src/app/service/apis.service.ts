@@ -1,7 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { TranslationRequest, TranslationResponse } from "../models/text-to-text";
+import { TranscriptionResponse } from "../models/speech-to-text";
+import { TTSRequest } from "../models/text-to-speech";
 
 @Injectable({
   providedIn: 'root'
@@ -25,5 +27,41 @@ export class ApisService {
     }
 
     return this.http.post<TranslationResponse>(endpoint, payload);
+  }
+
+  transcribeAudio(file: File, sourceLanguage: string): Observable<TranscriptionResponse> {
+    const formData = new FormData();
+    formData.append('file', file)
+
+    let endpoint = "";
+    if (sourceLanguage === 'hi') {
+      endpoint = `${this.baseUrl}/speech-to-text/sanskrit`;
+    } else if (sourceLanguage === 'sa') {
+      endpoint = `${this.baseUrl}/speech-to-text/hindi`;
+    } else {
+      throw new Error("Invalid source language selected");
+    }
+
+    const extension = file.name.split('.').pop()?.toLowerCase() || 'wav';
+
+    const params = new HttpParams().set('audio_format', extension);
+
+    return this.http.post<TranscriptionResponse>(endpoint, formData, { params: params });
+  }
+
+  generateSpeech(text: string, language: string): Observable<Blob> {
+    const payload: TTSRequest = { text: text };
+    
+    let endpoint = "";
+
+    if (language === 'sa') {
+      endpoint = `${this.baseUrl}/text-to-speech/sanskrit`;
+    } else if (language === 'hi') {
+      endpoint = `${this.baseUrl}/text-to-speech/hindi`;
+    } else {
+      throw new Error("Invalid language selected");
+    }
+
+    return this.http.post(endpoint, payload, { responseType: 'blob' });
   }
 }

@@ -1,33 +1,68 @@
 .ttt-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center; 
+  align-items: flex-start; 
   padding: 40px;
-  gap: 30px;
-  height: 100vh;
+  gap: 40px;
+  min-height: 100vh; 
   box-sizing: border-box;
+  background-color: #f9f9fa; 
+  
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 20px;
+    height: auto; 
+  }
 }
 
 .input-section,
 .output-section {
-  width: 50%;
+  flex: 1;
+  max-width: 600px; 
   display: flex;
   flex-direction: column;
+  
+  width: 100%; 
 }
 
 h2 {
   margin-bottom: 15px;
-  font-size: 22px;
+  font-size: 20px;
+  font-weight: 600;
   color: #333;
 }
 
-textarea {
+textarea,
+.output-box {
   width: 100%;
-  height: 250px;
+  height: 300px;
   padding: 15px;
   font-size: 16px;
+  line-height: 1.5;
   border-radius: 8px;
   border: 1px solid #ccc;
-  resize: none;
+  box-sizing: border-box; 
+  font-family: inherit;
+
+  &:focus {
+    outline: 2px solid #1976d2;
+    border-color: transparent;
+  }
+}
+
+textarea {
+  resize: vertical;
+  max-width: 100%; 
+}
+
+.output-box {
+  background: #fff;
+  color: #444;
+  
+  overflow-y: auto;      
+  white-space: pre-wrap;  
+  word-wrap: break-word;  
 }
 
 .select-row {
@@ -35,42 +70,50 @@ textarea {
   display: flex;
   align-items: center;
   gap: 15px;
+  flex-wrap: wrap; 
 
   label {
     font-weight: 500;
+    color: #555;
   }
 
   select {
-    padding: 8px 12px;
+    padding: 10px 12px;
     font-size: 15px;
     border-radius: 6px;
-    border: 1px solid #aaa;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+    min-width: 120px;
+
+    &:focus {
+      border-color: #1976d2;
+      outline: none;
+    }
   }
 }
 
 button {
   margin-top: 20px;
-  width: 150px;
-  padding: 12px;
+  padding: 12px 24px;
   border: none;
   background-color: #1976d2;
   color: white;
   font-size: 16px;
+  font-weight: 500;
   border-radius: 6px;
   cursor: pointer;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
+  align-self: flex-start; 
 
-  &:hover {
-    background-color: #0d47a1;
+  &:active:not(:disabled) {
+    transform: translateY(0);
   }
-}
 
-.output-box {
-  margin-top: 10px;
-  padding: 15px;
-  height: 250px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 16px;
-  background: #fafafa;
+  &:disabled {
+    background-color: #90caf9;
+    color: #eceff1;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 }

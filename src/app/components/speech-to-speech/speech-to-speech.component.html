@@ -3,36 +3,63 @@
   <div class="sts-box">
     <h2>Speech to Speech</h2>
 
-    <!-- Upload -->
     <label class="file-label">Upload Audio File:</label>
     <input
       type="file"
-      accept="audio/*"
+      (change)="onFileSelected($event)"
+      accept=".wav, .mp3, .flac"
       class="file-input"
     />
- 
 
-    <!-- Language Selection -->
+    @if(selectedFile){
+      <p class="file-name">Selected: {{ selectedFile.name }}</p>
+    }
+
     <div class="language-row">
-      <label>Select Target Language:</label>
-
-      <select>
-        <option value="hi">Hindi</option>
-        <option value="sa">Sanskrit</option>
+      <label>Target Language:</label>
+      <select [(ngModel)]="targetLanguage">
+        <option value="sa">Sanskrit (Input: Hindi)</option>
+        <option value="hi">Hindi (Input: Sanskrit)</option>
       </select>
     </div>
 
-    <!-- Translate Button -->
-    <button>
-      Convert Speech
+    <button (click)="processSpeechToSpeech()" [disabled]="!selectedFile || isLoading()">
+      {{ isLoading() ? 'Processing...' : 'Convert Speech' }}
     </button>
 
-    <!-- Download Button -->
-    <div class="download-section">
-      <a>
-        <button class="download-btn">Download Translated Audio</button>
-      </a>
-    </div>
+    @if(isLoading() || errorMessage || currentStep) {
+      <div class="status-section">
+      @if(errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }@else if(isLoading()){
+        <p class="info">{{ currentStep }}</p>
+      }
+      </div>
+    }
+    
+    @if(finalAudioUrl){
+      <div class="result-section">
+        <h3>Result</h3>
+        
+        <div class="debug-text">
+          <p><strong>Heard:</strong> {{ detectedText }}</p>
+          <p><strong>Translated:</strong> {{ translatedText }}</p>
+        </div>
+  
+        <audio [src]="finalAudioUrl" controls autoplay></audio>
+  
+        <div class="download-section">
+          <a [href]="finalAudioUrl" download="translated_speech.wav">
+            <button class="download-btn">Download Audio</button>
+          </a>
+        </div>
+      </div>
+    }
+
   </div>
 
 </div>
+
+@if(isLoading()){
+  <app-loader></app-loader>
+}

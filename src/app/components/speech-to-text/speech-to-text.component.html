@@ -3,39 +3,57 @@
   <div class="stt-box">
     <h2>Speech to Text</h2>
 
-    <!-- Upload Audio -->
-    <label class="file-label">Upload Audio File:</label>
-    <input
-      type="file"
-      accept="audio/*"
-      class="file-input"
-    />
+    <div class="upload-section">
+      <label class="file-label">Upload Audio File (Max 5MB):</label>
+      <input
+        type="file"
+        (change)="onFileSelected($event)"
+        accept=".wav, .mp3, .flac"
+        class="file-input"
+      />
+      <small class="hint">Supported formats: .wav, .mp3, .flac</small>
+    </div>
 
-    <!-- File Name Display -->
-    <p class="file-name">
-      Selected: 
-    </p>
+    @if(selectedFile){
+      <p class="file-name">
+        Selected: <strong>{{ selectedFile.name }}</strong>
+      </p>
+    }
 
-    <!-- Language Selection -->
     <div class="language-row">
-      <label>Select Language:</label>
-
-      <select>
+      <label>Select Audio Language:</label>
+      <select [(ngModel)]="selectedLanguage">
         <option value="hi">Hindi</option>
         <option value="sa">Sanskrit</option>
       </select>
     </div>
 
-    <!-- Convert Button -->
-    <button>
-      Convert to Text
+    @if(errorMessage){
+      <div class="error-msg">
+        {{ errorMessage }}
+      </div>
+    }
+
+    <button (click)="convert()" [disabled]="!selectedFile || isLoading()" class="convert-btn">
+      @if(isLoading()){
+        Processing...
+      }@else{
+        Convert to Text
+      }
     </button>
 
-    <!-- Output Text Box -->
     <div class="output-section">
-      <h3>Converted Text</h3>
-      <textarea readonly></textarea>
+      <h3>Transcribed Text</h3>
+      <textarea 
+        readonly 
+        [value]="transcribedText"
+        placeholder="Transcription will appear here..."
+      ></textarea>
     </div>
   </div>
 
 </div>
+
+@if(isLoading()){
+  <app-loader></app-loader>
+}

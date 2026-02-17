@@ -3,29 +3,45 @@
   <div class="tts-box">
     <h2>Text to Speech</h2>
 
-    <!-- Text Input -->
     <textarea
+      [(ngModel)]="inputText"
       placeholder="Enter text to convert into speech..."
+      [maxlength]="1000"
+      [disabled]="isLoading()"
     ></textarea>
 
-    <!-- Language Select -->
     <div class="language-row">
       <label>Select Language:</label>
-      <select>
-        <option value="hi">Hindi</option>
+      <select [(ngModel)]="selectedLanguage">
         <option value="sa">Sanskrit</option>
+        <option value="hi">Hindi</option>
       </select>
     </div>
 
-    <!-- Generate Button -->
-    <button>Generate Audio</button>
+    
+    @if(errorMessage){
+      <p class="error-msg" style="color: red; text-align: center;">
+        {{ errorMessage }}
+      </p>
+    }
 
-    <!-- Download Button (only show when audio generated) -->
-    <div class="download-section">
-      <a>
-        <button class="download-btn">Download Audio</button>
-      </a>
-    </div>
+    <button (click)="generateAudio()" [disabled]="isLoading() || !inputText">
+      {{ isLoading() ? 'Generating...' : 'Generate Audio' }}
+    </button>
+
+    @if(audioUrl){
+      <div class="download-section">
+        <audio [src]="audioUrl" controls style="width: 100%; margin-bottom: 15px;"></audio>
+        
+        <a [href]="audioUrl" download="generated_speech.wav">
+          <button class="download-btn">Download Audio</button>
+        </a>
+      </div>
+    }
   </div>
 
 </div>
+
+@if(isLoading()){
+  <app-loader></app-loader>
+}

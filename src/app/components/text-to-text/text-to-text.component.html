@@ -6,6 +6,7 @@
     <textarea
       [(ngModel)]="inputText"
       placeholder="Type your text here..."
+      [maxLength]="5000"
     ></textarea>
 
     <div class="select-row">
@@ -17,7 +18,7 @@
       </select>
     </div>
 
-    <button (click)="translate()">Translate</button>
+    <button (click)="translate()" [disabled]="inputText === ''">Translate</button>
   </div>
 
   <div class="output-section">
