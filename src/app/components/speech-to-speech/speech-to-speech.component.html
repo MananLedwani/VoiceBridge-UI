@@ -3,13 +3,14 @@
   <div class="sts-box">
     <h2>Speech to Speech</h2>
 
-    <label class="file-label">Upload Audio File:</label>
+    <label class="file-label">Upload Audio File (Max 5MB):</label>
     <input
       type="file"
       (change)="onFileSelected($event)"
       accept=".wav, .mp3, .flac"
       class="file-input"
     />
+    <small class="hint">Supported formats: .wav, .mp3, .flac</small><br>
 
     @if(selectedFile){
       <p class="file-name">Selected: {{ selectedFile.name }}</p>
@@ -63,3 +64,5 @@
 @if(isLoading()){
   <app-loader></app-loader>
 }
+
+<p-toast/>

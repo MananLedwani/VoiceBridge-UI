@@ -5,7 +5,7 @@
 
     <textarea
       [(ngModel)]="inputText"
-      placeholder="Enter text to convert into speech..."
+      placeholder="Enter text to convert into speech (1000 words max)..."
       [maxlength]="1000"
       [disabled]="isLoading()"
     ></textarea>
@@ -45,3 +45,5 @@
 @if(isLoading()){
   <app-loader></app-loader>
 }
+
+<p-toast/>

@@ -5,11 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { ApisService } from '../../service/apis.service';
 import { switchMap } from 'rxjs/operators';
 import { LoaderComponent } from '../loader/loader.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-speech-to-speech',
   standalone: true,
-  imports: [CommonModule, FormsModule, LoaderComponent],
+  imports: [CommonModule, FormsModule, LoaderComponent, ToastModule],
+  providers: [MessageService],
   templateUrl: './speech-to-speech.component.html',
   styleUrl: './speech-to-speech.component.scss'
 })
@@ -26,13 +29,22 @@ export class SpeechToSpeechComponent implements OnDestroy {
   detectedText: string = '';
   translatedText: string = '';
 
-  constructor(private apiService: ApisService) {}
+  constructor(private apiService: ApisService, private messageService: MessageService) {}
+
+  showSuccess(message: string): void{
+     this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+  }
+
+  showError(message: string): void{
+     this.messageService.add({ severity: 'error', summary: 'Error', detail: message});
+  }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
         this.errorMessage = "File is too large. Max 5MB.";
+        this.showError(this.errorMessage);
         return;
       }
       this.selectedFile = file;
@@ -44,6 +56,7 @@ export class SpeechToSpeechComponent implements OnDestroy {
   processSpeechToSpeech(): void {
     if (!this.selectedFile) {
       this.errorMessage = "Please select an audio file first.";
+      this.showError(this.errorMessage);
       return;
     }
 
@@ -93,12 +106,14 @@ export class SpeechToSpeechComponent implements OnDestroy {
         this.finalAudioUrl = URL.createObjectURL(audioBlob);
         this.isLoading.set(false);
         this.currentStep = 'Completed!';
+        this.showSuccess("Translation Successful");
       },
       error: (err) => {
         console.error("Pipeline Failed", err);
         this.errorMessage = err.message || "An error occurred during processing.";
         this.isLoading.set(false);
         this.currentStep = 'Failed';
+        this.showError(this.errorMessage);
       }
     });
   }

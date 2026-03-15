@@ -6,10 +6,13 @@ import { ApisService } from '../../service/apis.service';
 import { TranscriptionResponse } from '../../models/speech-to-text';
 import { HttpErrorResponse } from '@angular/common/http';
 import { LoaderComponent } from '../loader/loader.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-speech-to-text',
-  imports: [CommonModule, FormsModule, LoaderComponent],
+  imports: [CommonModule, FormsModule, LoaderComponent, ToastModule],
+  providers: [MessageService],
   templateUrl: './speech-to-text.component.html',
   styleUrl: './speech-to-text.component.scss'
 })
@@ -23,7 +26,15 @@ export class SpeechToTextComponent {
   readonly MAX_SIZE_MB = 5;
   readonly ALLOWED_EXTENSIONS = ['wav', 'mp3', 'flac'];
 
-  constructor(private apiService: ApisService) {}
+  constructor(private apiService: ApisService, private messageService: MessageService) {}
+
+  showSuccess(message: string): void{
+     this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+  }
+
+  showError(message: string): void{
+     this.messageService.add({ severity: 'error', summary: 'Error', detail: message});
+  }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -34,6 +45,7 @@ export class SpeechToTextComponent {
       const fileSizeMB = file.size / (1024 * 1024);
       if (fileSizeMB > this.MAX_SIZE_MB) {
         this.errorMessage = `File is too large (${fileSizeMB.toFixed(2)} MB). Max limit is ${this.MAX_SIZE_MB} MB.`;
+        this.showError(this.errorMessage);
         this.selectedFile = null;
         event.target.value = ''; 
         return;
@@ -42,6 +54,7 @@ export class SpeechToTextComponent {
       const extension = file.name.split('.').pop()?.toLowerCase();
       if (!extension || !this.ALLOWED_EXTENSIONS.includes(extension)) {
         this.errorMessage = `Invalid file type. Allowed: ${this.ALLOWED_EXTENSIONS.join(', ')}`;
+        this.showError(this.errorMessage);
         this.selectedFile = null;
         event.target.value = '';
         return;
@@ -54,6 +67,7 @@ export class SpeechToTextComponent {
   convert(): void {
     if (!this.selectedFile) {
       this.errorMessage = "Please select a file first.";
+      this.showError(this.errorMessage);
       return;
     }
 
@@ -71,6 +85,7 @@ export class SpeechToTextComponent {
           console.error("Transcription failed", error);
           this.errorMessage = error.error?.detail || "Transcription failed. Please try again.";
           this.isLoading.set(false);
+          this.showError(this.errorMessage);
         }
       });
   }
