@@ -1,44 +1,73 @@
+/* Apply box-sizing to all elements for predictable sizing */
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: #f4f4f4;
     color: #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Changed to min-height to prevent clipping */
     margin: 0;
     text-align: center;
+    padding: 20px; /* Gives a safe area so the box doesn't touch the screen edges */
 }
 
 .container {
     background: #fff;
-    padding: 2em;
+    padding: 2.5em 2em;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Tells the box to shrink on small screens... */
+    max-width: 400px; /* ...but never grow wider than 400px on desktop */
 }
 
 h1 {
     color: #cc0000;
-    font-size: 2em;
+    font-size: 2.5em;
+    margin-top: 0;
+    margin-bottom: 0.2em;
 }
 
 p {
     line-height: 1.5;
-    margin-bottom: 1.5em;
+    margin-bottom: 2em;
+    color: #555;
 }
 
 button {
     background-color: #007BFF;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: 6px;
     cursor: pointer;
     font-size: 1em;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    width: 100%; /* Makes the button fill the container */
+    max-width: 200px; /* Keeps the button from looking too wide on desktop */
 }
 
 button:hover {
     background-color: #0056b3;
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+    .container {
+        padding: 2em 1.5em; /* Reduce padding to save space on small screens */
+    }
+
+    h1 {
+        font-size: 2em; /* Scale down the main error text */
+    }
+
+    button {
+        max-width: 100%; /* Stretch the button to full width for easier thumb tapping */
+    }
 }

@@ -1,42 +1,158 @@
-.nav{
-    position: relative;
-    left: 0;
-    z-index: 1000;
-    width: 100%;
+/* Target the host element so it takes up the full screen */
+:host {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden; /* Prevents the whole page from scrolling; scroll only inside content */
 }
 
-.logout{
-    height: 40px;
-    width: 100px;
-    border-radius: 6px;
-    border: 2px solid red;
-    background-color: red;
-    color: white;
+/* Overall layout wrapper */
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
-.logout:hover{
-    cursor: pointer;
-}
+/* Navbar styles */
+.nav {
+  flex-shrink: 0; /* Prevents navbar from shrinking */
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 
-.title{
-    margin-left: 15px;
-}
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-left: 10px;
 
-.sidebar{
-    margin-top: 0px;
-    width: 12.5%;
-    position: fixed;
-    height: 100%;
-
-    ::ng-deep.p-menu {
-        height: 100%;
+    .title {
+      margin: 0;
+      color: #333;
     }
+  }
 }
 
-.router-outlet{
-    height: 673px;
-    width: 86.9%;
-    margin-left: 200px;
-    padding: 6px;
-    overflow: auto;
+.logout-btn {
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 6px;
+  border: none;
+  background-color: #dc3545;
+  color: white;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: #c82333;
+    cursor: pointer;
+  }
+}
+
+/* Container holding sidebar and router-outlet */
+.main-container {
+  display: flex;
+  flex: 1; /* Takes up all remaining vertical space below navbar */
+  overflow: hidden; 
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px; /* Fixed width on desktop */
+  flex-shrink: 0;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto; /* Adds scrollbar if menu gets too long */
+
+  /* Force PrimeNG menu to fill the sidebar container without borders */
+  ::ng-deep .p-menu {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+/* Main Content area */
+.content-area {
+  flex: 1; /* Takes up all remaining horizontal space */
+  padding: 20px;
+  overflow-y: auto; /* Scrollbar for your main content */
+  background-color: #f8f9fa; /* Slight off-white to contrast with sidebar */
+}
+
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets and smaller */
+@media screen and (max-width: 768px) {
+  .main-container {
+    flex-direction: column; /* Stacks sidebar on top of content */
+  }
+
+  .sidebar {
+    width: 100%; /* Sidebar takes full width */
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e0e0e0;
+  }
+}
+
+/* Mobile Phones */
+@media screen and (max-width: 576px) {
+  .content-area {
+    padding: 10px; /* Less padding on small screens to save space */
+  }
+  
+  .nav .brand .title {
+    display: none; /* Optionally hide the title text to fit the logout button */
+  }
+}
+
+/* --- ADD TO YOUR EXISTING SCSS --- */
+
+/* Hide the hamburger icon on desktop by default */
+.mobile-menu-btn {
+  display: none; 
+}
+
+/* Base styles for the desktop sidebar */
+.desktop-sidebar {
+  width: 250px; 
+  flex-shrink: 0;
+  background-color: #ffffff;
+  border-right: 1px solid #e0e0e0;
+  overflow-y: auto; 
+
+  ::ng-deep .p-menu {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+/* Force the PrimeNG menu inside the drawer to look clean */
+::ng-deep .mobile-menu-overrides {
+  width: 100%;
+  border: none;
+}
+
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets and Mobile Devices */
+@media screen and (max-width: 768px) {
+  
+  .desktop-sidebar {
+    display: none; /* Completely hide the fixed sidebar */
+  }
+
+  .mobile-menu-btn {
+    display: block; /* Show the hamburger icon */
+    margin-right: 15px;
+    margin-top: 5px;
+    color: #333;
+  }
+
+  /* Optional: Adjust spacing for mobile navbar */
+  .nav .brand {
+    gap: 5px;
+  }
 }

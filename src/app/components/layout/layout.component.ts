@@ -4,10 +4,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { Menu } from 'primeng/menu';
 import { MenuItem } from 'primeng/api';
 import { Router, RouterOutlet } from '@angular/router';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-layout',
-  imports: [Menubar, AvatarModule, Menu, RouterOutlet],
+  imports: [Menubar, AvatarModule, Menu, RouterOutlet, SidebarModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
@@ -34,6 +35,8 @@ export class LayoutComponent {
   ];
 
   constructor(private router: Router) {}
+
+  sidebarVisible: boolean = false;
 
   onLogout() {
     this.router.navigate(['/login']);

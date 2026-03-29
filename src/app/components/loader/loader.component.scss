@@ -1,15 +1,17 @@
-.container{
-    position: fixed;
-    inset: 0;
-    background: rgba(255, 255, 255, 0.75);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
+/* --- BASE STYLES (DESKTOP) --- */
+.container {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  /* inset: 0 ensures this container is always 100% width and height on all devices */
 }
 
 .loader {
-  width: 70px;
+  width: 70px; /* Standard size for desktop/tablets */
   aspect-ratio: 1;
   display: grid;
   border: 4px solid transparent;
@@ -17,6 +19,7 @@
   border-right-color: #1976d2;
   animation: l15 1s infinite linear;
 }
+
 .loader::before,
 .loader::after {    
   content: "";
@@ -26,10 +29,26 @@
   border-radius: 50%;
   animation: l15 2s infinite;
 }
+
 .loader::after {
   margin: 8px;
   animation-duration: 3s;
 }
-@keyframes l15{ 
-  100%{transform: rotate(1turn)}
+
+@keyframes l15 { 
+  100% { transform: rotate(1turn); }
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+  .loader {
+    width: 50px; /* Scale down the overall size of the spinner */
+    border-width: 3px; /* Slightly thinner borders to match the smaller size */
+  }
+
+  .loader::after {
+    margin: 6px; /* Adjust the spacing for the innermost ring */
+  }
 }

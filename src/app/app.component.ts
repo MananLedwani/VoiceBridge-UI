@@ -10,5 +10,5 @@ import { LayoutComponent } from "./components/layout/layout.component";
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'eval-project-inventory';
+  title = 'voicebridge';
 }

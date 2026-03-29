@@ -1,6 +1,9 @@
+/* --- BASE STYLES (DESKTOP) --- */
 .container {
   display: flex;
   height: 100vh;
+  width: 100%;
+  overflow: hidden; /* Prevents unwanted page scrolling */
 }
 
 .left {
@@ -19,59 +22,141 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center; /* Centers the form block nicely */
+  overflow-y: auto; /* Allows scrolling if the screen is short */
 }
 
 h1 {
   font-size: 32px;
   margin-bottom: 20px;
   text-align: center;
+  width: 100%;
 }
 
 form {
   width: 80%;
-  margin: auto;
+  max-width: 450px; /* Prevents the form from stretching too wide on large screens */
   display: flex;
   flex-direction: column;
 }
 
 label {
-  margin-top: 10px;
+  margin-top: 15px; /* Slightly increased for better tap targets on touch screens */
   margin-bottom: 5px;
+  font-weight: 500;
 }
 
 input {
-  padding: 10px;
+  padding: 12px; /* Increased padding for better mobile input */
   border: 1px solid #ccc;
   border-radius: 6px;
+  font-size: 16px; /* Prevents iOS Safari from auto-zooming when tapping an input */
+}
+
+input:focus {
+  outline: none;
+  border-color: #1976d2;
 }
 
 button {
-  margin-top: 20px;
-  padding: 10px;
+  margin-top: 25px;
+  padding: 12px;
   background: #1976d2;
   color: #fff;
   border: none;
   border-radius: 6px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+button:hover:not([disabled]) {
+  background: #115293;
+}
+
+button[disabled] {
+  background: #90caf9;
+  cursor: not-allowed;
 }
 
 .error {
-  color: red;
+  color: #d32f2f;
   font-size: 13px;
-  margin-top: 3px;
+  margin-top: 5px;
 }
 
 .switch-text {
-  margin-top: 10px;
+  margin-top: 20px;
   text-align: center;
 }
 
 .switch-text span {
-  color: blue;
-  text-decoration: underline;
+  color: #1976d2;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.req{
+.switch-text span:hover {
+  text-decoration: underline;
+}
+
+.req {
   color: red;
+  margin-left: 3px;
+}
+
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets (Screens smaller than 992px) */
+@media screen and (max-width: 992px) {
+  .right {
+    padding: 20px;
+  }
+  
+  form {
+    width: 95%; /* Give the form more breathing room */
+  }
+}
+
+/* Large Mobile / Small Tablets (Screens smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .container {
+    flex-direction: column; /* Stack the image on top of the form */
+  }
+
+  .left {
+    width: 100%;
+    height: 30vh; /* Image takes up the top 30% of the screen */
+    flex-shrink: 0;
+  }
+
+  .right {
+    width: 100%;
+    height: 70vh; /* Form takes the remaining 70% */
+    justify-content: flex-start; /* Push content to the top instead of middle */
+    padding-top: 30px;
+  }
+}
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+  .left {
+    display: none; /* Hide the image entirely to save space for the virtual keyboard */
+  }
+
+  .right {
+    height: 100vh;
+    justify-content: center; /* Re-center the form vertically */
+    padding: 15px;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
 }

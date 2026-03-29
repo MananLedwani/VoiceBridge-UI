@@ -1,23 +1,38 @@
-<div class="nav">
-  <p-menubar>
-    <ng-template #start>
-      <p-avatar label="V" class="mr-1" size="large" id="label" />
-      <div class="title">
-        <h3><b>VoiceBridge</b></h3>
-      </div>
-    </ng-template>
-    <ng-template #end>
-      <div class="flex items-center gap-2">
-        <button class="logout" (click)="onLogout()"><b>Logout</b></button>
-      </div>
-    </ng-template>
-  </p-menubar>
-</div>
+<div class="app-layout">
+  
+  <header class="nav">
+    <p-menubar>
+      <ng-template #start>
+        <div class="brand">
+          <div class="mobile-menu-btn">
+            <i class="pi pi-bars" style="font-size: 1.5rem; cursor: pointer;" (click)="sidebarVisible = true"></i>
+          </div>
 
-<div class="sidebar">
-  <p-menu [model]="items"></p-menu>
-</div>
+          <p-avatar label="V" class="mr-2" size="large"></p-avatar>
+          <h3 class="title"><b>VoiceBridge</b></h3>
+        </div>
+      </ng-template>
+      <ng-template #end>
+        <button class="logout-btn" (click)="onLogout()"><b>Logout</b></button>
+      </ng-template>
+    </p-menubar>
+  </header>
 
-<div class="router-outlet">
-    <router-outlet></router-outlet>
+  <div class="main-container">
+    
+    <aside class="desktop-sidebar">
+      <p-menu [model]="items"></p-menu>
+    </aside>
+
+    <p-sidebar [(visible)]="sidebarVisible" position="left" [baseZIndex]="10000">
+        <h3 style="font-weight:bold; margin-bottom: 20px; margin-left: 10px;">Menu</h3>
+        <p-menu [model]="items" styleClass="mobile-menu-overrides"></p-menu>
+    </p-sidebar>
+
+    <main class="content-area">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>
+  
 </div>

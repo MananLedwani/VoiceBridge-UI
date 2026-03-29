@@ -1,7 +1,11 @@
+/* --- BASE STYLES (DESKTOP) --- */
 .stt-container {
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* Prevents the box from stretching full-height */
   padding: 2rem;
+  min-height: 100vh;
+  box-sizing: border-box;
 
   .stt-box {
     background: #fff;
@@ -13,6 +17,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    box-sizing: border-box; /* Crucial: includes padding in the width calculation */
 
     h2 {
       text-align: center;
@@ -35,6 +40,17 @@
       border: 1px solid #ccc;
       padding: 0.5rem;
       border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .file-name {
+      word-wrap: break-word; /* Prevents long file names from stretching the container */
+      font-size: 0.95rem;
+      color: #444;
+      background: #f4f6f8;
+      padding: 8px;
+      border-radius: 4px;
     }
 
     .language-row {
@@ -43,16 +59,19 @@
       gap: 0.5rem;
 
       select {
-        padding: 0.5rem;
+        padding: 0.75rem 0.5rem; /* Larger padding for better touch targets */
         border-radius: 4px;
         border: 1px solid #ccc;
+        width: 100%;
+        box-sizing: border-box;
+        font-size: 16px; /* Prevents iOS auto-zoom */
       }
     }
 
     .error-msg {
       color: #d32f2f;
       background: #ffebee;
-      padding: 0.5rem;
+      padding: 0.75rem;
       border-radius: 4px;
       font-size: 0.9rem;
       text-align: center;
@@ -61,12 +80,14 @@
     .convert-btn {
       background-color: #1976d2;
       color: white;
-      padding: 0.75rem;
+      padding: 0.85rem; /* Taller button for easier thumb tapping */
       border: none;
       border-radius: 4px;
       cursor: pointer;
       font-weight: bold;
       transition: background 0.3s;
+      width: 100%;
+      font-size: 1rem;
 
       &:disabled {
         background-color: #9fd1ea;
@@ -74,20 +95,63 @@
       }
 
       &:hover:not(:disabled) {
-        background-color: #1976d2;
+        background-color: #115293;
       }
     }
 
     .output-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      h3 {
+        margin: 0;
+        color: #333;
+        font-size: 1.1rem;
+      }
+
       textarea {
         width: 100%;
-        height: 100px;
-        padding: 0.5rem;
+        height: 120px;
+        padding: 0.75rem;
         border: 1px solid #ccc;
         border-radius: 4px;
         resize: vertical;
         background-color: #f9f9f9;
+        box-sizing: border-box; /* Ensures padding doesn't push width > 100% */
+        font-size: 16px; /* Prevents iOS auto-zoom */
       }
+    }
+  }
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets & Mobile (Screens smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .stt-container {
+    padding: 1.5rem 1rem; /* Reduce outer padding */
+    
+    .stt-box {
+      padding: 1.5rem; /* Reduce inner padding */
+      gap: 1.25rem; /* Slightly tighten the gaps */
+    }
+  }
+}
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+  .stt-container {
+    padding: 1rem 0.5rem; 
+    
+    .stt-box {
+      padding: 1.25rem;
+      border-radius: 8px; 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Softer shadow on mobile */
+    }
+
+    h2 {
+      font-size: 1.25rem; /* Scale down the header slightly */
     }
   }
 }

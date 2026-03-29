@@ -1,6 +1,8 @@
+/* --- BASE STYLES (DESKTOP) --- */
 .sts-container {
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* Prevents stretching vertically if content is small */
   padding: 40px;
   min-height: 100vh;
   box-sizing: border-box;
@@ -8,6 +10,7 @@
 
 .sts-box {
   width: 50%;
+  max-width: 700px; /* Added max-width so it doesn't get ridiculously wide on huge screens */
   height: fit-content;
   background: #fff;
   padding: 35px;
@@ -15,6 +18,7 @@
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
+  
   .hint {
     color: #666;
     font-size: 0.8rem;
@@ -41,6 +45,8 @@ h2 {
   border-radius: 6px;
   background: #fafafa;
   margin-bottom: 5px;
+  width: 100%; /* Ensures the input doesn't overflow the box */
+  box-sizing: border-box;
 }
 
 .file-name {
@@ -48,6 +54,7 @@ h2 {
   color: #444;
   font-size: 14px;
   font-style: italic;
+  word-wrap: break-word; /* Prevents long file names from breaking the layout */
 }
 
 .language-row {
@@ -59,6 +66,7 @@ h2 {
   label {
     font-size: 16px;
     font-weight: 500;
+    white-space: nowrap; 
   }
 
   select {
@@ -68,6 +76,8 @@ h2 {
     border: 1px solid #aaa;
     cursor: pointer;
     flex-grow: 1;
+    min-width: 0; /* <--- CRUCIAL: Forces the select to shrink inside Flexbox */
+    box-sizing: border-box; /* <--- CRUCIAL: Prevents padding from breaking width */
 
     &:focus {
       border-color: #1976d2;
@@ -94,7 +104,6 @@ button {
   }
 }
 
-/* New Status Styles */
 .status-section {
   text-align: center;
   margin-top: 15px;
@@ -125,6 +134,7 @@ button {
     color: #555;
     max-height: 150px;
     overflow-y: auto;
+    box-sizing: border-box;
     
     p { margin: 5px 0;}
   }
@@ -136,5 +146,59 @@ button {
     &:hover {
       background-color: #1b5e20;
     }
+  }
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets (Screens smaller than 992px) */
+@media screen and (max-width: 992px) {
+  .sts-box {
+    width: 75%; 
+  }
+
+  /* Stack the dropdown vertically on all tablets so it never overflows */
+  .language-row {
+    flex-direction: column; 
+    align-items: flex-start;
+    gap: 8px;
+
+    select {
+      width: 100%; 
+    }
+  }
+}
+
+/* Large Mobile / Small Tablets (Screens smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .sts-container {
+    padding: 20px; 
+  }
+
+  .sts-box {
+    width: 95%; 
+    padding: 25px; 
+  }
+  
+  /* The language-row is already stacked from the 992px query, so we don't need to repeat it here */
+}
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+  .sts-container {
+    padding: 10px;
+  }
+
+  .sts-box {
+    width: 100%;
+    padding: 20px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  button {
+    width: 100%; 
   }
 }

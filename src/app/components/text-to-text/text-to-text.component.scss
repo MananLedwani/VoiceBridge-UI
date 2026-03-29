@@ -1,3 +1,4 @@
+/* --- BASE STYLES (DESKTOP) --- */
 .ttt-container {
   display: flex;
   justify-content: center; 
@@ -7,13 +8,6 @@
   min-height: 100vh; 
   box-sizing: border-box;
   background-color: #f9f9fa; 
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 20px;
-    height: auto; 
-  }
 }
 
 .input-section,
@@ -22,8 +16,8 @@
   max-width: 600px; 
   display: flex;
   flex-direction: column;
-  
   width: 100%; 
+  box-sizing: border-box;
 }
 
 h2 {
@@ -33,12 +27,13 @@ h2 {
   color: #333;
 }
 
+/* Shared styles for both input and output boxes */
 textarea,
 .output-box {
   width: 100%;
   height: 300px;
   padding: 15px;
-  font-size: 16px;
+  font-size: 16px; /* Crucial: 16px prevents iOS auto-zoom */
   line-height: 1.5;
   border-radius: 8px;
   border: 1px solid #ccc;
@@ -59,7 +54,6 @@ textarea {
 .output-box {
   background: #fff;
   color: #444;
-  
   overflow-y: auto;      
   white-space: pre-wrap;  
   word-wrap: break-word;  
@@ -75,16 +69,19 @@ textarea {
   label {
     font-weight: 500;
     color: #555;
+    white-space: nowrap;
   }
 
   select {
     padding: 10px 12px;
-    font-size: 15px;
+    font-size: 16px; /* Bumped from 15px to 16px to prevent iOS auto-zoom */
     border-radius: 6px;
     border: 1px solid #ccc;
     background-color: #fff;
     cursor: pointer;
+    flex-grow: 1; /* Allows it to fill remaining space */
     min-width: 120px;
+    box-sizing: border-box;
 
     &:focus {
       border-color: #1976d2;
@@ -106,8 +103,12 @@ button {
   transition: all 0.2s ease;
   align-self: flex-start; 
 
+  &:hover:not(:disabled) {
+    background-color: #115293;
+  }
+
   &:active:not(:disabled) {
-    transform: translateY(0);
+    transform: translateY(1px); /* Slight click effect */
   }
 
   &:disabled {
@@ -115,5 +116,51 @@ button {
     color: #eceff1;
     cursor: not-allowed;
     box-shadow: none;
+  }
+}
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets and Large Mobile (Screens smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .ttt-container {
+    flex-direction: column;
+    align-items: center; /* Center the columns */
+    padding: 25px 20px;
+    gap: 30px; /* Reduce gap between input and output sections */
+  }
+
+  .input-section,
+  .output-section {
+    max-width: 100%; /* Allow sections to take full width of mobile screen */
+  }
+}
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+  .ttt-container {
+    padding: 15px 10px;
+    gap: 20px;
+  }
+
+  textarea,
+  .output-box {
+    height: 200px; /* Shrink height so both boxes fit on the screen better */
+    padding: 12px;
+  }
+
+  .select-row {
+    flex-direction: column; /* Stack the label and dropdown */
+    align-items: flex-start;
+    gap: 8px;
+    
+    select {
+      width: 100%; /* Make dropdown full width */
+    }
+  }
+
+  button {
+    width: 100%; /* Stretch button across the screen for easier tapping */
+    align-self: center;
   }
 }

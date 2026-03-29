@@ -1,19 +1,23 @@
+/* --- BASE STYLES (DESKTOP) --- */
 .tts-container {
   display: flex;
   justify-content: center;
+  align-items: flex-start; /* Prevents vertical stretching on short content */
   padding: 40px;
-  height: 100vh;
+  min-height: 100vh; /* Changed from height to min-height to allow scrolling */
   box-sizing: border-box;
 }
 
 .tts-box {
-  width: 50%;
+  width: 100%; 
+  max-width: 700px; /* Replaces the hardcoded 50% width */
   background: #fff;
   padding: 35px;
   border-radius: 12px;
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 h2 {
@@ -28,12 +32,13 @@ textarea {
   width: 100%;
   height: 220px;
   padding: 15px;
-  font-size: 16px;
+  font-size: 16px; /* Crucial: 16px prevents iOS Safari auto-zoom */
   border-radius: 8px;
   border: 1px solid #ccc;
-  resize: none;
+  resize: vertical; /* Better UX than 'none': lets users expand it if they write a lot */
   margin-bottom: 15px;
   font-family: inherit;
+  box-sizing: border-box; /* Ensures padding doesn't break the 100% width */
 
   &:focus {
     border-color: #1976d2;
@@ -51,15 +56,18 @@ textarea {
     font-size: 16px;
     font-weight: 500;
     color: #444;
+    white-space: nowrap;
   }
 
   select {
     padding: 10px 12px;
-    font-size: 15px;
+    font-size: 16px; /* Bumped to 16px to prevent iOS auto-zoom */
     border-radius: 6px;
     border: 1px solid #aaa;
     background: #fff;
     cursor: pointer;
+    flex-grow: 1; /* Allows the select box to naturally fill remaining space */
+    box-sizing: border-box;
 
     &:focus {
       border-color: #1976d2;
@@ -92,6 +100,11 @@ button {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  
+  audio {
+    max-width: 100%; /* Prevents the native HTML audio player from breaking out of the box */
+  }
 }
 
 .download-btn {
@@ -104,8 +117,52 @@ button {
   cursor: pointer;
   transition: 0.2s ease;
   text-decoration: none;
+  width: 180px;
 
   &:hover {
     background-color: #1b5e20;
+  }
+}
+
+
+/* --- RESPONSIVE MEDIA QUERIES --- */
+
+/* Tablets (Screens smaller than 768px) */
+@media screen and (max-width: 768px) {
+  .tts-container {
+    padding: 20px; /* Reduce outer padding */
+  }
+
+  .tts-box {
+    padding: 25px; /* Reduce inner box padding */
+  }
+
+  .language-row {
+    flex-direction: column; /* Stack the label and select vertically */
+    align-items: flex-start;
+    gap: 10px;
+
+    select {
+      width: 100%; /* Make the dropdown full-width */
+    }
+  }
+}
+
+/* Small Mobile Phones (Screens smaller than 480px) */
+@media screen and (max-width: 480px) {
+  .tts-container {
+    padding: 15px 10px;
+  }
+
+  .tts-box {
+    padding: 20px 15px;
+  }
+
+  textarea {
+    height: 180px; /* Slightly shorter textarea to save vertical space on small phones */
+  }
+
+  button, .download-btn {
+    width: 100%; /* Stretch buttons across the full screen for easier thumb tapping */
   }
 }
